@@ -1,0 +1,14 @@
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+@import "./fonts.css";
+@import "./animations.css";
+
+main#root * {
+    font-family: NotoSans;
+}
+
+.loading {
+    animation: whirligig .5s linear infinite;
+}

@@ -1,8 +1,6 @@
 <div align="center">
 
-# Chatty
-
-#### Frontend
+# Chatty Frontend
 
 </div>
 
