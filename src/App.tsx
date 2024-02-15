@@ -1,29 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
-import Gateway from "@/views/Gateway";
-import Login from "@/views/Login";
-import Register from "@/views/Register";
-import Chat from "@/views/Chat";
-import NotFound from "@/views/NotFound";
-
 import MainContext from "@/contexts/MainContext";
+
+const Login = lazy(() => import("@/views/Login"));
+const Register = lazy(() => import("@/views/Register"));
+const Chat = lazy(() => import("@/views/Chat"));
+const NotFound = lazy(() => import("@/views/NotFound"));
 
 const App: React.FC = () => {
     return (
         <MainContext.Provider value={{ }}>
             <MantineProvider>
                 <Router>
-                    <Routes>
-                        <Route path="/" element={<Gateway />}/>
-                        <Route path="/login" element={<Login />}/>
-                        <Route path="/register" element={<Register />}/>
-                        <Route path="/chat" element={<Chat />}/>
-                        <Route path="*" element={<NotFound />}/>
-                    </Routes>
+                    <Suspense>
+                        <Routes>
+                            <Route path="/" element={<Navigate to="/login"/>}/>
+                            <Route path="/login" element={<Login />}/>
+                            <Route path="/register" element={<Register />}/>
+                            <Route path="/chat" element={<Chat />}/>
+                            <Route path="/chat/:room" element={<Chat />}/>
+                            <Route path="*" element={<NotFound />}/>
+                        </Routes>
+                    </Suspense>
                 </Router>
 
                 <Notifications />

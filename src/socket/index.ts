@@ -7,7 +7,6 @@ export default class Socket {
 
     private url: string;
     private ws?: WebSocket;
-    private connectionId?: string;
 
     private constructor() {
         this.url = URL +"/";
@@ -25,16 +24,13 @@ export default class Socket {
 
         if(this.ws) this.closeCurrentConnection();
         this.ws = new WebSocket(this.url);
+        this.ws.addEventListener("open", () => {
+            handlers.onOpen && handlers.onOpen();
+        });
         this.ws.addEventListener("message", (e) => {
             const packet = Packet.from(e.data);
 
             switch(packet.type) {
-                case PacketType.HANDSHAKE:
-                    if(this.connectionId) return;
-
-                    this.connectionId = packet.data as string;
-                    handlers.onOpen && handlers.onOpen();
-                    break;
                 case PacketType.ERROR:
                     handlers.onError && handlers.onError(packet.data as string);
                     break;
@@ -49,9 +45,8 @@ export default class Socket {
     }
 
     public closeCurrentConnection(): void {
-        if(!this.ws || !this.connectionId) return;
+        if(!this.ws) return;
 
-        this.send(PacketType.CLOSE, this.connectionId);
         this.ws.close();
     }
 

@@ -6,8 +6,10 @@ import md5 from "md5";
 import Cookies from "js-cookie";
 
 import Socket from "@/socket";
-import useQuery from "@/hooks/useQuery";
+import Page from "@/components/Page";
 import { PacketType } from "@/types";
+
+import useQuery from "@/hooks/useQuery";
 
 const Login: React.FC = () => {
     const form = useForm({
@@ -31,6 +33,11 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         const socket = Socket.get();
+
+        if(Cookies.get("chatty-token")) {
+            window.location.href = "/chat";
+            return;
+        }
 
         socket.connect("/login", {
             onOpen() {
@@ -69,7 +76,7 @@ const Login: React.FC = () => {
     }, [query]);
 
     return (
-        <div className="h-[100vh] flex flex-col justify-center">
+        <Page>
             <Card withBorder radius="md" className="w-[400px] ml-auto mr-auto">
                 <Card.Section className="p-5 pt-7 pb-3">
                     <Title order={2}>登录 Chatty</Title>
@@ -88,7 +95,7 @@ const Login: React.FC = () => {
                     </form>
                 </Card.Section>
             </Card>
-        </div>
+        </Page>
     );
 };
 

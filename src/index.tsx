@@ -4,6 +4,7 @@ import App from "@/App";
 // Style
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@tabler/icons-webfont/tabler-icons.min.css";
 import "@/style/index.css";
 
 const root = ReactDOM.createRoot(

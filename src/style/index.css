@@ -3,12 +3,22 @@
 @tailwind utilities;
 
 @import "./fonts.css";
-@import "./animations.css";
 
 main#root * {
-    font-family: NotoSans;
+    font-family: NotoSans, "tabler-icons";
 }
 
-.loading {
-    animation: whirligig .5s linear infinite;
+main#root *::selection {
+    background-color: #c6def5;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    cursor: default;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 50px;
 }

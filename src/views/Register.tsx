@@ -3,8 +3,10 @@ import { Card, Title, TextInput, PasswordInput, Button, Group, Anchor } from "@m
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import md5 from "md5";
+import Cookies from "js-cookie";
 
 import Socket from "@/socket";
+import Page from "@/components/Page";
 import { PacketType } from "@/types";
 
 const Register: React.FC = () => {
@@ -39,6 +41,11 @@ const Register: React.FC = () => {
     useEffect(() => {
         const socket = Socket.get();
 
+        if(Cookies.get("chatty-token")) {
+            window.location.href = "/chat";
+            return;
+        }
+
         socket.connect("/register", {
             onMessage(packet) {
                 switch(packet.type) {
@@ -60,7 +67,7 @@ const Register: React.FC = () => {
     }, []);
 
     return (
-        <div className="h-[100vh] flex flex-col justify-center">
+        <Page>
             <Card withBorder radius="md" className="w-[400px] ml-auto mr-auto">
                 <Card.Section className="p-5 pt-7 pb-3">
                     <Title order={2}>注册账号</Title>
@@ -80,7 +87,7 @@ const Register: React.FC = () => {
                     </form>
                 </Card.Section>
             </Card>
-        </div>
+        </Page>
     );
 };
 
